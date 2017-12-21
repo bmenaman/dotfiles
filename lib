@@ -1,0 +1,33 @@
+#!/bin/bash
+
+add_to_path(){
+  NAME=$1
+  if [[ ! -v $NAME ]]
+  then
+    echo "$NAME is undefined"
+    return 1
+  fi
+
+  eval TARGET=\$$NAME
+  EXTEND=$2
+  if [[ -v $EXTEND ]]
+  then
+    FINAL=$TARGET/$EXTEND
+  else
+    FINAL=$TARGET
+  fi
+
+  if [[ ! -e $FINAL ]]
+  then
+    echo "$FINAL does not exist"
+    return 1
+  fi
+
+  if [[ $PATH == *"$FINAL"* ]]
+  then
+    echo "$PATH already contains $FINAL"
+    return 1
+  fi
+
+  export PATH=$FINAL:$PATH
+}

@@ -1,0 +1,38 @@
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias lR='ls -R'
+alias lt='ls -lat'
+
+# Subversion
+alias up='svn up'
+alias st='svn st'
+alias sd='svn diff | less'
+
+#std dirs
+alias dev='cd $DEV'
+
+# git
+alias gco='git checkout'
+alias gst='git status -s'
+alias gpr='git pull  --rebase'
+
+#working file - temp aliases etc
+alias edwk='vim ~/.working_bashrc'
+
+#misc
+alias duh='du -h --max-depth=1 | sort -h'
+alias grp='grep -E'

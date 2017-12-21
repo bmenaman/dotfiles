@@ -1,0 +1,3 @@
+#!/bin/bash
+SVN_PATH=/cygdrive/c/programs/subversion/bin
+export PATH=$SVN_PATH:$PATH

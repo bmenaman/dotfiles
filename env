@@ -1,0 +1,39 @@
+#!/bin/bash
+
+export DEV=$HOME/dev
+if [ ! -e $DEV ]
+then
+  mkdir -p $DEV/bin
+  mkdir -p $DEV/repo
+fi
+
+export EDITOR=vim
+
+unamestr=$(uname)
+if [[ "$unamestr" == "$CYGWIN" ]]; then
+   platform="$CYGWIN"
+   source $DOTFILES/cygwin_env	
+elif [[ "$unamestr" == "Darwin" ]]; then
+   platform="OSX"
+fi
+
+export PLATFORM=$platform
+
+export OC_HOME=$DEV/oc
+export GRADLE_HOME=$DEV/gradle/current
+export DOCKER_HOME=$DEV/docker/current
+export JAVA_HOME=$DEV/jdk/current
+export SBT_HOME=$DEV/sbt/current
+
+declare -a TOOLS=(\
+  "OC_HOME"\
+  "DOCKER_HOME"\
+  "JAVA_HOME bin"\
+  "GRADLE_HOME bin"\
+  "SBT_HOME bin"\
+  )
+
+for tool in "${TOOLS[@]}"
+do
+  add_to_path $tool
+done
