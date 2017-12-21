@@ -1,0 +1,2 @@
+#so os x will treat every terminal as a login terminal which means it load bash_profile and not bashrc
+[[ -s ~/.bashrc ]] && source ~/.bashrc
