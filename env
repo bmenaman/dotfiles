@@ -22,7 +22,13 @@ export PLATFORM=$platform
 export OC_HOME=$DEV/oc
 export GRADLE_HOME=$DEV/gradle/current
 export DOCKER_HOME=$DEV/docker/current
-export JAVA_HOME=$DEV/jdk/current
+
+if [[ "$platform" == "OSX" ]]; then
+  export JAVA_HOME=$(/usr/libexec/java_home)
+else
+  export JAVA_HOME=$DEV/jdk/current
+fi
+
 export SBT_HOME=$DEV/sbt/current
 
 declare -a TOOLS=(\
