@@ -71,5 +71,8 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+if [[ $PS1 && -f /usr/share/bash_completion/bash_completion  ]] && ! shopt -oq posix; then
+    . /usr/share/bash_completion/bash_completion 
+fi
 ##VI mode editing
 set -o vi
