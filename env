@@ -22,6 +22,7 @@ export PLATFORM=$platform
 export OC_HOME=$DEV/oc
 export GRADLE_HOME=$DEV/gradle/current
 export DOCKER_HOME=$DEV/docker/current
+export GOLANG_HOME="/usr/local/go"
 
 if [[ "$platform" == "OSX" ]]; then
   export JAVA_HOME=$(/usr/libexec/java_home)
@@ -37,9 +38,11 @@ declare -a TOOLS=(\
   "JAVA_HOME bin"\
   "GRADLE_HOME bin"\
   "SBT_HOME bin"\
+  "GOLANG_HOME bin"\
   )
 
 for tool in "${TOOLS[@]}"
 do
   add_to_path $tool
 done
+
