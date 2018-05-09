@@ -9,4 +9,4 @@ fi
 
 export DOTFILES_LOCAL=~/bin/dotfiles_local
 export DOTFILES=~/dev/repos/dotfiles
-. $DOTFILES/bashrc
+source $DOTFILES/bash/bashrc
