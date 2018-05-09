@@ -41,7 +41,10 @@
 #        shell session.  After the string is decoded, it is expanded via parameter expansion, command  substitution,
 #        arithmetic  expansion,  and  quote  removal,  subject  to the value of the promptvars shell option (see the
 #        description of the shopt command under SHELL BUILTIN COMMANDS below).
-export PS1="\u@\h \w\n\$ "
+PROMPT="\u@\h \w"
+# attempt to set terminal title
+# TITLE="\e]1;${PROMPT}\a"
+export PS1="${PROMPT}\n$ "
 
 # old config with some intelligence around colour
 #
