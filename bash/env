@@ -12,7 +12,7 @@ export EDITOR=vim
 unamestr=$(uname)
 if [[ "$unamestr" == "$CYGWIN" ]]; then
    platform="$CYGWIN"
-   source $DOTFILES/cygwin_env	
+   source $DOTFILES/bash/cygwin_env	
 elif [[ "$unamestr" == "Darwin" ]]; then
    platform="OSX"
 fi

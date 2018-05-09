@@ -2,6 +2,6 @@
 
 for f in lib env config aliases finally
 do
-  [ -e $DOTFILES/$f ] && source $DOTFILES/$f
-  [ -e $DOTFILES_LOCAL/$f ] && source $DOTFILES_LOCAL/$f
+  [ -e $DOTFILES/bash/$f ] && source $DOTFILES/bash/$f
+  [ -e $DOTFILES_LOCAL/bash/$f ] && source $DOTFILES_LOCAL/bash/$f
 done
