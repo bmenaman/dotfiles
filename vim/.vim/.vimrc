@@ -1,6 +1,15 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+
+"pathogen
+execute pathogen#infect()
+"start solarized (pathogen) conf
+syntax enable
+set background=light
+colorscheme solarized
+"end solarized conf
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
