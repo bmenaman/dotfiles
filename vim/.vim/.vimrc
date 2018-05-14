@@ -8,6 +8,10 @@ execute pathogen#infect()
 syntax enable
 set background=light
 colorscheme solarized
+if has('gui_running')
+	set background=dark
+	colorscheme solarized
+endif
 "end solarized conf
 
 " set the runtime path to include Vundle and initialize
