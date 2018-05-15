@@ -6,7 +6,7 @@ set tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab
 execute pathogen#infect()
 "start solarized (pathogen) conf
 syntax enable
-set background=light
+set background=dark
 colorscheme solarized
 if has('gui_running')
 	set background=dark
