@@ -1,7 +1,7 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-
+set tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab
 "pathogen
 execute pathogen#infect()
 "start solarized (pathogen) conf
