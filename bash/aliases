@@ -36,3 +36,9 @@ alias edwk='vim ~/.working_bashrc'
 #misc
 alias duh='du -h --max-depth=1 | sort -h'
 alias grp='grep -E'
+
+#clipboard tools
+if [ ! $(command -v pbcopy) -a $(command -v xclip) ];then
+  alias pbcopy='xclip -selection clipboard'
+  alias pbpaste='xclip -selection clipboard -o'
+fi
