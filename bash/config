@@ -41,3 +41,8 @@ if [[ $PS1 && -f /usr/share/bash_completion/bash_completion  ]] && ! shopt -oq p
 fi
 ##VI mode editing
 set -o vi
+
+if command -v fzf-share >/dev/null; then
+  source "$(fzf-share)/key-bindings.bash"
+fi
+
