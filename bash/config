@@ -4,7 +4,7 @@ HISTCONTROL=ignoredups:ignorespace
 
 # append to the history file, don't overwrite it
 shopt -s histappend
-
+PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 #prevent * expanding to include . & ..
 GLOBIGNORE=.:..
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
