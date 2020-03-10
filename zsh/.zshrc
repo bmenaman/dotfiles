@@ -73,7 +73,7 @@ if [ -n "${commands[fzf-share]}" ]; then
   export FZF_BASE=$(fzf-share)
 fi
 plugins=(git docker kubectl vi-mode fzf)
-export SOLARIZED_THEME=light
+export SOLARIZED_THEME=dark
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
