@@ -107,3 +107,6 @@ setopt incappendhistory
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+if [ -d "$DOTFILES_LOCAL" ]; then
+  source $DOTFILES_LOCAL/.zshrc
+fi
