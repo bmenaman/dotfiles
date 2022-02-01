@@ -72,7 +72,7 @@ if [ -n "${commands[fzf-share]}" ]; then
   source "$(fzf-share)/key-bindings.zsh"
   export FZF_BASE=$(fzf-share)
 fi
-plugins=(git docker kubectl vi-mode fzf)
+plugins=(git docker kubectl vi-mode fzf thefuck)
 export SOLARIZED_THEME=dark
 source $ZSH/oh-my-zsh.sh
 
@@ -110,3 +110,7 @@ setopt incappendhistory
 if [ -d "$DOTFILES_LOCAL" ]; then
   source $DOTFILES_LOCAL/.zshrc
 fi
+DIR_ENV_PATH="$(realpath $(which direnv))"
+if [ -e $DIR_ENV_PATH ]; then
+	eval "$(direnv hook zsh)"
+fi       
