@@ -110,7 +110,7 @@ setopt incappendhistory
 if [ -d "$DOTFILES_LOCAL" ]; then
   source $DOTFILES_LOCAL/.zshrc
 fi
-DIR_ENV_PATH="$(realpath $(which direnv))"
+DIR_ENV_PATH="$(readlink -f $(which direnv))"
 if [ -e $DIR_ENV_PATH ]; then
 	eval "$(direnv hook zsh)"
 fi       
