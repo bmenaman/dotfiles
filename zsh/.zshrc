@@ -76,7 +76,7 @@ if [ -n "${commands[fzf-share]}" ]; then
   source "$(fzf-share)/key-bindings.zsh"
   export FZF_BASE=$(fzf-share)
 fi
-plugins=(git docker kubectl vi-mode fzf thefuck)
+plugins=(git docker kubectl vi-mode fzf)
 export SOLARIZED_THEME=dark
 source $ZSH/oh-my-zsh.sh
 
