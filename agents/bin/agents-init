@@ -3,7 +3,7 @@
 # Usage: agents-init [--help]
 #
 # Run from the root of a repo. Does one of two things:
-#   - No AGENTS.md present: symlinks to the global AGENTS.md
+#   - No AGENTS.md present: symlinks to the global AGENTS.md and supporting files
 #   - AGENTS.md already exists: prepends a prose reference to the global file
 
 set -e
@@ -12,11 +12,13 @@ DOTFILES="${DOTFILES:-$HOME/dotfiles}"
 DOTFILES_LOCAL="${DOTFILES_LOCAL:-}"
 
 # Prefer local override if it exists
-if [ -n "$DOTFILES_LOCAL" ] && [ -f "$DOTFILES_LOCAL/agents/AGENTS.md" ]; then
-  GLOBAL_AGENTS="$DOTFILES_LOCAL/agents/AGENTS.md"
+if [ -n "$DOTFILES_LOCAL" ] && [ -d "$DOTFILES_LOCAL/agents" ]; then
+  GLOBAL_AGENTS_DIR="$DOTFILES_LOCAL/agents"
 else
-  GLOBAL_AGENTS="$DOTFILES/agents/AGENTS.md"
+  GLOBAL_AGENTS_DIR="$DOTFILES/agents"
 fi
+
+GLOBAL_AGENTS="$GLOBAL_AGENTS_DIR/AGENTS.md"
 
 if [ ! -f "$GLOBAL_AGENTS" ]; then
   echo "Error: global AGENTS.md not found at $GLOBAL_AGENTS" >&2
@@ -24,25 +26,54 @@ if [ ! -f "$GLOBAL_AGENTS" ]; then
   exit 1
 fi
 
+# Files to symlink alongside AGENTS.md
+AGENT_FILES=(
+  "acceptance_criteria.md"
+  "bdd.md"
+  "hexagonal_architecture_guidance.md"
+  "jj-workflow.md"
+  "telemetry.md"
+)
+
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   echo "Usage: agents-init"
   echo ""
   echo "Run from the root of a repo to install global agent rules."
-  echo "  - No AGENTS.md: symlinks to $GLOBAL_AGENTS"
+  echo "  - No AGENTS.md: symlinks to $GLOBAL_AGENTS and supporting files"
   echo "  - Existing AGENTS.md: prepends a reference to the global file"
   exit 0
 fi
+
+# Create ~/agents directory if it doesn't exist
+mkdir -p ~/agents
 
 MARKER="Also read and follow the global agent rules"
 
 if [ ! -e "AGENTS.md" ]; then
   ln -s "$GLOBAL_AGENTS" AGENTS.md
   echo "Symlinked AGENTS.md → $GLOBAL_AGENTS"
+  
+  # Symlink supporting files to ~/agents/
+  for file in "${AGENT_FILES[@]}"; do
+    if [ -f "$GLOBAL_AGENTS_DIR/$file" ]; then
+      ln -sf "$GLOBAL_AGENTS_DIR/$file" ~/agents/"$file"
+      echo "Symlinked ~/agents/$file → $GLOBAL_AGENTS_DIR/$file"
+    fi
+  done
 
 elif [ -L "AGENTS.md" ]; then
   current_target=$(readlink "AGENTS.md")
   if [ "$current_target" = "$GLOBAL_AGENTS" ]; then
-    echo "AGENTS.md is already symlinked to $GLOBAL_AGENTS — nothing to do"
+    echo "AGENTS.md is already symlinked to $GLOBAL_AGENTS"
+    
+    # Ensure supporting files are also symlinked
+    for file in "${AGENT_FILES[@]}"; do
+      if [ -f "$GLOBAL_AGENTS_DIR/$file" ] && [ ! -e ~/agents/"$file" ]; then
+        mkdir -p ~/agents
+        ln -sf "$GLOBAL_AGENTS_DIR/$file" ~/agents/"$file"
+        echo "Symlinked ~/agents/$file → $GLOBAL_AGENTS_DIR/$file"
+      fi
+    done
   else
     echo "AGENTS.md is a symlink to $current_target (not the global file)"
     echo "Remove it manually if you want to re-point it."
