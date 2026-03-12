@@ -2,94 +2,46 @@
 # agents-init: install global agent rules into the current repo
 # Usage: agents-init [--help]
 #
-# Run from the root of a repo. Does one of two things:
-#   - No AGENTS.md present: symlinks to the global AGENTS.md and supporting files
-#   - AGENTS.md already exists: prepends a prose reference to the global file
+# Run from the root of a repo. Creates:
+#   - AGENTS.md symlink in repo root
+#   - agents/ directory with symlinks to all rule files
 
 set -e
 
-DOTFILES="${DOTFILES:-$HOME/dotfiles}"
-DOTFILES_LOCAL="${DOTFILES_LOCAL:-}"
+DOTFILES="${DOTFILES:-$HOME/repos/bmenaman/dotfiles}"
 
-# Prefer local override if it exists
-if [ -n "$DOTFILES_LOCAL" ] && [ -d "$DOTFILES_LOCAL/agents" ]; then
-  GLOBAL_AGENTS_DIR="$DOTFILES_LOCAL/agents"
-else
-  GLOBAL_AGENTS_DIR="$DOTFILES/agents"
-fi
-
-GLOBAL_AGENTS="$GLOBAL_AGENTS_DIR/AGENTS.md"
-
-if [ ! -f "$GLOBAL_AGENTS" ]; then
-  echo "Error: global AGENTS.md not found at $GLOBAL_AGENTS" >&2
+if [ ! -d "$DOTFILES/agents" ]; then
+  echo "Error: $DOTFILES/agents not found" >&2
   echo "Set \$DOTFILES to your dotfiles repo path." >&2
   exit 1
 fi
-
-# Files to symlink alongside AGENTS.md
-AGENT_FILES=(
-  "acceptance_criteria.md"
-  "bdd.md"
-  "hexagonal_architecture_guidance.md"
-  "jj-workflow.md"
-  "telemetry.md"
-)
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   echo "Usage: agents-init"
   echo ""
   echo "Run from the root of a repo to install global agent rules."
-  echo "  - No AGENTS.md: symlinks to $GLOBAL_AGENTS and supporting files"
-  echo "  - Existing AGENTS.md: prepends a reference to the global file"
+  echo "Creates AGENTS.md and agents/ directory with symlinks to $DOTFILES/agents"
   exit 0
 fi
 
-# Create ~/agents directory if it doesn't exist
-mkdir -p ~/agents
-
-MARKER="Also read and follow the global agent rules"
-
+# Create AGENTS.md symlink
 if [ ! -e "AGENTS.md" ]; then
-  ln -s "$GLOBAL_AGENTS" AGENTS.md
-  echo "Symlinked AGENTS.md → $GLOBAL_AGENTS"
-  
-  # Symlink supporting files to ~/agents/
-  for file in "${AGENT_FILES[@]}"; do
-    if [ -f "$GLOBAL_AGENTS_DIR/$file" ]; then
-      ln -sf "$GLOBAL_AGENTS_DIR/$file" ~/agents/"$file"
-      echo "Symlinked ~/agents/$file → $GLOBAL_AGENTS_DIR/$file"
-    fi
-  done
-
+  ln -s "$DOTFILES/agents/AGENTS.md" AGENTS.md
+  echo "Symlinked AGENTS.md → $DOTFILES/agents/AGENTS.md"
 elif [ -L "AGENTS.md" ]; then
-  current_target=$(readlink "AGENTS.md")
-  if [ "$current_target" = "$GLOBAL_AGENTS" ]; then
-    echo "AGENTS.md is already symlinked to $GLOBAL_AGENTS"
-    
-    # Ensure supporting files are also symlinked
-    for file in "${AGENT_FILES[@]}"; do
-      if [ -f "$GLOBAL_AGENTS_DIR/$file" ] && [ ! -e ~/agents/"$file" ]; then
-        mkdir -p ~/agents
-        ln -sf "$GLOBAL_AGENTS_DIR/$file" ~/agents/"$file"
-        echo "Symlinked ~/agents/$file → $GLOBAL_AGENTS_DIR/$file"
-      fi
-    done
-  else
-    echo "AGENTS.md is a symlink to $current_target (not the global file)"
-    echo "Remove it manually if you want to re-point it."
-    exit 1
-  fi
-
-elif grep -q "$MARKER" AGENTS.md; then
-  echo "AGENTS.md already references global rules — nothing to do"
-
+  echo "AGENTS.md already exists as symlink"
 else
-  TMPFILE=$(mktemp)
-  {
-    echo "$MARKER at $GLOBAL_AGENTS before applying the project-specific rules below."
-    echo ""
-    cat AGENTS.md
-  } > "$TMPFILE"
-  mv "$TMPFILE" AGENTS.md
-  echo "Prepended global reference to existing AGENTS.md"
+  echo "AGENTS.md already exists as regular file"
 fi
+
+# Create agents directory and symlink all .md files
+mkdir -p agents
+for file in "$DOTFILES/agents"/*.md; do
+  basename=$(basename "$file")
+  if [ "$basename" != "AGENTS.md" ] && [ ! -e "agents/$basename" ]; then
+    ln -s "$file" "agents/$basename"
+    echo "Symlinked agents/$basename → $file"
+  fi
+done
+
+echo "Done. Agent rules installed."
