@@ -2,6 +2,13 @@
 # Kiro CLI pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
 
+# Homebrew — put brew + its installed tools on PATH (Apple Silicon or Intel).
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x /usr/local/bin/brew ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/.docker/bin
 
@@ -135,5 +142,11 @@ obsidian() {
   open -a "Obsidian" "$(cd "${1:-.}" && pwd)"
 }
 
+# kiro
+alias ka='kiro-cli chat --trust-all-tools'
+
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
+
+# pi-search-hub (Exa backend)
+export SEARCH_EXA_API_KEY='bb934ae0-02f0-4c74-af41-0a422849c007'
