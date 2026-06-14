@@ -13,7 +13,7 @@ fi
 export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/.docker/bin
 
 # Dotfiles
-export DOTFILES="$HOME/repos/bmenaman/dotfiles"
+export DOTFILES="$HOME/repos/github.com/bmenaman/dotfiles"
 export PATH="$DOTFILES/agents/bin:$PATH"
 
 # Path to your oh-my-zsh installation.

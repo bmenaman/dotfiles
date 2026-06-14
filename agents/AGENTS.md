@@ -1,6 +1,8 @@
 # Global Agent Rules
 
 ## Workflow
+If a repo contains `.jj/`, use the `jj` skill and jj commands for version control. Do not use raw `git`; detached `HEAD` is normal in colocated jj repos.
+
 For any task or work that involves editing a file, consult agents/jj-workflow.md
 
 ## Definition of Done

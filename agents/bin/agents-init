@@ -8,20 +8,25 @@
 
 set -e
 
-DOTFILES="${DOTFILES:-$HOME/repos/bmenaman/dotfiles}"
-
-if [ ! -d "$DOTFILES/agents" ]; then
-  echo "Error: $DOTFILES/agents not found" >&2
-  echo "Set \$DOTFILES to your dotfiles repo path." >&2
-  exit 1
-fi
+DEFAULT_DOTFILES="$HOME/repos/github.com/bmenaman/dotfiles"
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   echo "Usage: agents-init"
   echo ""
   echo "Run from the root of a repo to install global agent rules."
-  echo "Creates AGENTS.md and agents/ directory with symlinks to $DOTFILES/agents"
+  echo "Creates AGENTS.md and agents/ directory with symlinks to $DEFAULT_DOTFILES/agents"
   exit 0
+fi
+
+DOTFILES="${DOTFILES:-$DEFAULT_DOTFILES}"
+if [ ! -d "$DOTFILES/agents" ] && [ -d "$DEFAULT_DOTFILES/agents" ]; then
+  DOTFILES="$DEFAULT_DOTFILES"
+fi
+
+if [ ! -d "$DOTFILES/agents" ]; then
+  echo "Error: $DOTFILES/agents not found" >&2
+  echo "Set \$DOTFILES to your dotfiles repo path." >&2
+  exit 1
 fi
 
 # Create AGENTS.md symlink
