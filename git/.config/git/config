@@ -1,0 +1,5 @@
+[user]
+	name = Roger Day
+	email = roger.day@gmail.com
+[init]
+	defaultBranch = main
